@@ -4,9 +4,17 @@
       $this->userModel = $this->model('User');
     }
 
-    public function register(){
+    public function index(){
       // Check for POST
-      if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+    if(isset($_POST['login'])) {
+      die('login pressed');
+
+
+
+
+      
+    } elseif(isset($_POST['register'])) {
         // Process form
   
         // Sanitize POST data
@@ -17,11 +25,9 @@
           'name' => trim($_POST['name']),
           'email' => trim($_POST['email']),
           'password' => trim($_POST['password']),
-          'confirm_password' => trim($_POST['confirm_password']),
           'name_err' => '',
           'email_err' => '',
           'password_err' => '',
-          'confirm_password_err' => ''
         ];
 
         // Validate Email
@@ -36,60 +42,53 @@
 
         // Validate Name
         if(empty($data['name'])){
-          $data['name_err'] = 'Pleae enter name';
+          $data['name_err'] = 'Please enter name';
         }
 
         // Validate Password
         if(empty($data['password'])){
-          $data['password_err'] = 'Pleae enter password';
+          $data['password_err'] = 'Please enter password';
         } elseif(strlen($data['password']) < 6){
           $data['password_err'] = 'Password must be at least 6 characters';
         }
 
-        // Validate Confirm Password
-        if(empty($data['confirm_password'])){
-          $data['confirm_password_err'] = 'Pleae confirm password';
-        } else {
-          if($data['password'] != $data['confirm_password']){
-            $data['confirm_password_err'] = 'Passwords do not match';
-          }
-        }
-
         // Make sure errors are empty
-        if(empty($data['email_err']) && empty($data['name_err']) && empty($data['password_err']) && empty($data['confirm_password_err'])){
+        if(empty($data['email_err']) && empty($data['name_err']) && empty($data['password_err'])){
           // Validated
-          
+
           // Hash Password
           $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
 
           // Register User
           if($this->userModel->register($data)){
-            flash('register_success', 'You are registered and can log in');
-            redirect('users/login');
+            die('User registered');
+            // flash('register_success', 'You are registered and can log in');
+            // redirect('users/login');
           } else {
             die('Something went wrong');
           }
 
         } else {
           // Load view with errors
-          $this->view('users/register', $data);
+          $this->view('users/index', $data);
         }
-
       } else {
         // Init data
         $data =[
+          'login_email' => '',
+          'login_password' => '',
           'name' => '',
           'email' => '',
           'password' => '',
-          'confirm_password' => '',
+          'login_email_err' => '',
+          'login_password_err' => '',
           'name_err' => '',
           'email_err' => '',
-          'password_err' => '',
-          'confirm_password_err' => ''
+          'password_err' => ''
         ];
 
         // Load view
-        $this->view('users/register', $data);
+        $this->view('users/index', $data);
       }
     }
 

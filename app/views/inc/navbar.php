@@ -14,7 +14,7 @@
             <a class="nav-link" href="<?= URLROOT; ?>/pages/about">About</a>
           </li>
         </ul>
-        
+
         <ul class="navbar-nav ml-auto">
           <?php if(isset($_SESSION['user_id'])) : ?>
           <li class="nav-item">
@@ -31,6 +31,8 @@
               <a class="nav-link" href="<?= URLROOT; ?>/users/login">Login</a>
             </li>
           <?php endif; ?>
+
+          <a class="nav-link" href="<?= URLROOT; ?>/users/index">Index page</a>
         </ul>
       </div>
     </div>
